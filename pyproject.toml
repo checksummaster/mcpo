@@ -23,6 +23,7 @@ dependencies = [
 
 [project.scripts]
 mcpo = "mcpo:app"
+mcpo-package = "mcpo.packaging:app"
 
 [build-system]
 requires = ["hatchling"]
@@ -32,4 +33,5 @@ build-backend = "hatchling.build"
 dev = [
     "pytest>=8.3.5",
     "pytest-asyncio>=0.23.0",
+    "pyinstaller>=5.12.1",
 ]

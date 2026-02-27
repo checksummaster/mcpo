@@ -242,6 +242,48 @@ To contribute or run tests locally:
     This allows you to test your changes interactively before committing or creating a pull request. Access your locally running `mcpo` instance at `http://localhost:8000` and the auto-generated docs at `http://localhost:8000/docs`.
 
 
+## 🚀 Packaging Stand-Alone Executables
+
+`mcpo` now ships with a `uv` script called `mcpo-package` that wraps PyInstaller and produces self-contained binaries for both Windows and WSL (Linux). The helper scripts live under `scripts/mcpo_entry.py` and `src/mcpo/packaging.py`, and the zipped artifacts end up in `build/packages`.
+
+1. **Initialize uv and install dev tooling (this also prepares the project for packaging):**
+
+   ```bash
+   uv sync --dev
+   ```
+
+2. **Build the Win32 executable on a Windows host:**
+
+   ```bash
+   uv run mcpo-package win32
+   ```
+
+   The command creates `build/packages/mcpo-win32.zip`, which houses `mcpo.exe`, `README.md`, and `LICENSE`.
+
+3. **Build the WSL/Linux executable from inside WSL or another Linux environment:**
+
+   ```bash
+   uv run mcpo-package wsl
+   ```
+
+   PyInstaller must run on the same platform as the target, so execute this inside WSL to produce `build/packages/mcpo-wsl.zip`.
+
+4. **Build both targets in one step:**
+
+   ```bash
+   uv run mcpo-package all
+   ```
+
+5. **Clean all generated artifacts:**
+
+   ```bash
+   uv run mcpo-package clean
+   ```
+
+6. **Advanced options:** Use `--keep-build` to retain PyInstaller workfiles or override `--build-root` / `--archive-root` if you want to stage artifacts outside of `build/`.
+
+GitHub Actions now runs the same packaging steps whenever a release is published (`.github/workflows/release-packaging.yml`), so each release automatically includes the `mcpo-win32.zip` and `mcpo-wsl.zip` assets that you can download right from GitHub.
+
 ## 🪪 License
 
 MIT
