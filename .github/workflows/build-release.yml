@@ -23,7 +23,7 @@ jobs:
             - name: Get version number from pyproject.toml
               id: get_version
               run: |
-                  VERSION=$(awk -F' *= *' '$1 == "version" { gsub(/"/, "", $2); print $2 }' pyproject.toml)
+                  VERSION=$(awk -F' *= *' '$1 == "version" { gsub(/"/, "", $2); print $2 }' pyproject.toml | tr -d '\r')
                   echo "Detected version: $VERSION"
                   echo "version=$VERSION" >> "$GITHUB_OUTPUT"
 
